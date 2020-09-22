@@ -1,101 +1,98 @@
-enum SponsorLogo {
-  Tiger,
-  Turtle,
-  Fish,
-  Rat
+enum Color {
+  GREEN,
+  YELLOW,
+  RED,
+  ORANGE,
+  BLACK
+}
+enum Category {
+  TOYS,
+  FURNITURE,
+  FRUIT
+}
+interface Product {
+  name: string;
+  price: number;
+  color: Color;
+  category: Category;
 }
 
-enum PrimaryColor {
-  Black,
-  White,
-  Red
+let banana: Product = {
+  name: "Banana",
+  price: 22,
+  color: Color.YELLOW,
+  category: Category.FRUIT
+}
+let apple: Product = {
+  name: "Apple",
+  price: 10,
+  color: Color.RED,
+  category: Category.FRUIT
+}
+let toyCar: Product = {
+  name: "Blixen McQueen",
+  price: 200,
+  color: Color.RED,
+  category: Category.TOYS
+}
+let rcCar: Product = {
+  name: "Traxxas",
+  price: 3000,
+  color: Color.GREEN,
+  category: Category.TOYS
+}
+let sofa: Product = {
+  name: "Klippan",
+  price: 2500,
+  color: Color.BLACK,
+  category: Category.FURNITURE
+}
+let chair: Product = {
+  name: "Olle",
+  price: 500,
+  color: Color.ORANGE,
+  category: Category.FURNITURE
 }
 
-enum SecondaryColor {
-  Brown,
-  Blue,
-  Yellow,
-  Green
-}
+let products: Product[] = [banana, apple, toyCar, rcCar, sofa, chair]
+let basket: Product[] = [];
 
-enum Size {
-  S,
-  M,
-  L
-}
-
-interface Jersey {
-  playerName: string;
-  playerNumber: number;
-  primaryColor: PrimaryColor;
-  secondaryColor?: SecondaryColor;
-  sponsorLogo?: SponsorLogo;
-  size: Size;
-}
-
-class JerseyClass implements Jersey {
-  playerName: string;
-  playerNumber: number;
-  primaryColor: PrimaryColor;
-  secondaryColor?: SecondaryColor;
-  sponsorLogo?: SponsorLogo;
-  size: Size;
-/*
-  constructor(jersey: Jersey){
-    this.playerName = jersey.playerName;
-    this.playerNumber = jersey.playerNumber;
-    this.primaryColor = jersey.primaryColor;
-    this.secondaryColor = jersey.secondaryColor;
-    this.sponsorLogo = jersey.sponsorLogo;
-    this.size = jersey.size;
-    }
-  */
-
-    constructor(playerName: string, playerNumber: number, primaryColor: PrimaryColor, size: Size, secondaryColor?: SecondaryColor, sponsorLogo?: SponsorLogo){
-      this.playerName = playerName;
-      this.playerNumber = playerNumber;
-      this.primaryColor = primaryColor;
-      this.size = size;
-      this.secondaryColor = secondaryColor;
-      this.sponsorLogo = sponsorLogo;
-      }
-}
-
-let newJersey = new JerseyClass("Johan", 55, PrimaryColor.Red, Size.L);
-let newJersey2 = new JerseyClass("JohanHansson", 49, PrimaryColor.Red, Size.L);
-console.log(newJersey);
-
-
-let ratJersey: Jersey = {
-  playerName: "Oscar",
-  playerNumber: 1,
-  primaryColor: PrimaryColor.Black,
-  secondaryColor: SecondaryColor.Brown,
-  sponsorLogo: SponsorLogo.Rat,
-  size: Size.M
-} 
-
-let fishJersey: Jersey = {
-  playerName: "Benjamin",
-  playerNumber: 69,
-  primaryColor: PrimaryColor.White,
-  secondaryColor: SecondaryColor.Blue,
-  sponsorLogo: SponsorLogo.Fish,
-  size: Size.S
-} 
-
-//et newJersey = new JerseyClass(ratJersey);
-
-let retiredNumbers: number[] = [3, 5, 6, 49, 69];
-let players: Jersey[] = [ratJersey, fishJersey, newJersey, newJersey2];
-
-players.forEach((player) =>{
-  checkRetired(player);
+console.log("****************Products at start**********************")
+products.forEach((product) =>{
+  console.log(product.name)
 });
+console.log("***************Products at start***********************")
 
-function checkRetired(player: Jersey){
-  if(retiredNumbers.includes(player.playerNumber)){
-    console.log(player.playerName + " is a retired player");
+function addToBasket(product: Product){
+  if(products.includes(product)){
+    basket.push(product);
+    products.splice(products.indexOf(product), 1);
+    console.log(product.name + " - was added to the cart!")
   }
+  console.log("***************Products after addToBasket***********************")
+  products.forEach((product) =>{
+    console.log("Products - " + product.name)
+  });
+  console.log("***************Products after addToBasket***********************")
+  console.log("***************Products in shopping cart***********************")
+  basket.forEach((product) =>{
+    console.log("Basket - " + product.name)
+  });
+  console.log("***************Products in shopping cart***********************")
 }
 
+addToBasket(toyCar);
+
+(window as any).products = products;
+(window as any).addToBasket = addToBasket;
+(window as any).totalPrice = totalPrice;
+
+function totalPrice(){
+  let cost: number = 0; 
+  basket.forEach((product)=>{
+    cost += product.price
+  })
+  console.log(cost);
+}
+
+totalPrice();
